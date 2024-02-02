@@ -14,7 +14,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "443:443"
-      - "127.0.0.1:8080:8080"
+      - "100.64.0.2:8080:8080"
     restart: unless-stopped
     volumes:
       - "../secrets/traefik/letsencrypt:/letsencrypt"

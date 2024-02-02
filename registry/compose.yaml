@@ -25,7 +25,7 @@ services:
   ui:
     image: joxit/docker-registry-ui:latest
     ports:
-      - 127.0.0.1:8081:80
+      - 100.64.0.2:8081:80
     environment:
       - REGISTRY_TITLE=My Private Docker Registry
       - NGINX_PROXY_PASS_URL=http://registry:5000
