@@ -1,0 +1,19 @@
+services:
+  headscale:
+    image: headscale/headscale:0.22
+    command:
+    - "headscale"
+    - "serve"
+    volumes:
+    - ../secrets/headscale/config:/etc/headscale/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.headscale.rule=Host(`scale${SERVER_NO}.nohost.network`)"
+      - "traefik.http.routers.headscale.entrypoints=websecure"
+      - "traefik.http.routers.headscale.tls.certresolver=myresolver"
+    restart: unless-stopped
+    networks:
+    - external
+networks:
+  external:
+    external: true

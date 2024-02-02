@@ -1,0 +1,21 @@
+services:
+  vault:
+    image: hashicorp/vault
+    command:
+    - "server"
+    cap_add:
+        - IPC_LOCK
+    volumes:
+    - ./config:/vault/config
+    - /home/vault/:/vault/file:rw
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vault.rule=Host(`vault.nohost.network`)"
+      - "traefik.http.routers.vault.entrypoints=websecure"
+      - "traefik.http.routers.vault.tls.certresolver=myresolver"
+    restart: unless-stopped
+    networks:
+    - external
+networks:
+  external:
+    external: true

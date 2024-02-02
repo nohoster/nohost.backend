@@ -1,0 +1,42 @@
+services:
+  registry:
+    image: registry:2
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/passwdfile
+      REGISTRY_AUTH_HTPASSWD_REALM: basic-realm
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin: '[http://localhost:5000]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials: '[true]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods: '[HEAD,GET,OPTIONS,DELETE]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers: '[Authorization,Accept,Cache-Control]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Expose-Headers: '[Docker-Content-Digest]'
+    volumes:
+    - /home/registry:/data
+    - ../secrets/registry/auth:/auth
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.registry.rule=Host(`repo.nohost.network`)"
+      - "traefik.http.routers.registry.entrypoints=websecure"
+      - "traefik.http.routers.registry.tls.certresolver=myresolver"
+    restart: unless-stopped
+    networks:
+    - external
+
+  ui:
+    image: joxit/docker-registry-ui:latest
+    ports:
+      - 127.0.0.1:8081:80
+    environment:
+      - REGISTRY_TITLE=My Private Docker Registry
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - SINGLE_REGISTRY=true
+      - REGISTRY_SECURED=true
+    depends_on:
+      - registry
+    restart: unless-stopped
+    networks:
+    - external
+
+networks:
+  external:
+    external: true
