@@ -8,7 +8,7 @@ services:
     - ../secrets/headscale/config:/etc/headscale/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.headscale.rule=Host(`scale${SERVER_NO}.nohost.network`)"
+      - "traefik.http.routers.headscale.rule=Host(`scale01.nohost.network`)"
       - "traefik.http.routers.headscale.entrypoints=websecure"
       - "traefik.http.routers.headscale.tls.certresolver=myresolver"
     restart: unless-stopped

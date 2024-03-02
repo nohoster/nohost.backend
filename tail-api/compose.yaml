@@ -5,7 +5,7 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tail-api.rule=Host(`scale${SERVER_NO}.nohost.network`) && PathPrefix(`/api/v1/headscale`)"
+      - "traefik.http.routers.tail-api.rule=Host(`scale01.nohost.network`) && PathPrefix(`/api/v1/headscale`)"
       - "traefik.http.routers.tail-api.middlewares=auth"
       - "traefik.http.middlewares.auth.basicAuth.usersFile=/passwords/usersFile"
       - "traefik.http.routers.tail-api.entrypoints=websecure"
