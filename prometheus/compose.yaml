@@ -1,0 +1,21 @@
+services:
+  prometheus:
+    image: bitnami/prometheus:latest
+    command: --web.enable-remote-write-receiver --web.config.file="web-config.yml"
+    volumes:
+    - /home/prometheus/:/opt/bitnami/prometheus/data
+    - ./prometheus.yml:/opt/bitnami/prometheus/prometheus.yml
+    - ../secrets/prometheus/prom-web-config.yml:/opt/bitnami/prometheus/web-config.yml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.nohost.network`)"
+      - "traefik.http.routers.prometheus.entrypoints=websecure"
+      - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
+    ports:
+    - "100.64.0.2:9090:9090"
+    restart: unless-stopped
+    networks:
+    - external
+networks:
+  external:
+    external: true

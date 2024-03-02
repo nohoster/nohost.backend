@@ -1,0 +1,4 @@
+global:
+  # How frequently to scrape targets by default.
+  scrape_interval: 1y
+
